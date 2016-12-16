@@ -37,7 +37,7 @@ public class Application {
             Random r = new Random();
 
             for (int i = 0; i < 1000; i++) {
-                application.playNote(r.nextInt(20));
+                application.playNote(r.nextInt(20), 20);
             }
 
             application.closeMidi();
@@ -105,22 +105,40 @@ public class Application {
         track.add(me);
     }
 
-    public void playChord(Chord c){
+    public void playChord(Chord c) throws InvalidMidiDataException {
+        for (Note note : c.getNotes()) {
+            pressNote(note.ordinal());
+        }
 
+        curTick += 100;
+
+        for (Note note : c.getNotes()) {
+            releaseNote(note.ordinal());
+        }
     }
 
-    public void playNote(int i) throws InvalidMidiDataException {
+    public void playNote(int i, long ticks) throws InvalidMidiDataException {
 
-        ShortMessage mm = new ShortMessage();
-        mm.setMessage(PLAY_NOTE, 0x3C + i, 0x60);
-        MidiEvent me = new MidiEvent(mm,  curTick);
-        track.add(me);
+        pressNote(i);
+        curTick += ticks;
+        releaseNote(i);
+    }
+
+    private void releaseNote(int i) throws InvalidMidiDataException {
+        ShortMessage mm;
+        MidiEvent me;
 
 //****  note off - middle C - 120 ticks later  ****
         mm = new ShortMessage();
         mm.setMessage(0x80, 0x3C + i, 0x40);
-        curTick += 20;
-        me = new MidiEvent(mm,  curTick);
+        me = new MidiEvent(mm, curTick);
+        track.add(me);
+    }
+
+    private void pressNote(int i) throws InvalidMidiDataException {
+        ShortMessage mm = new ShortMessage();
+        mm.setMessage(PLAY_NOTE, 0x3C + i, 0x60);
+        MidiEvent me = new MidiEvent(mm, curTick);
         track.add(me);
     }
 }

@@ -1,5 +1,5 @@
 package com.github.forfun;
 
 public enum Note {
-    A, B, C, D, E, F, G
+    C, Cd, D, Dd, E, F, Fd, G, Gd, A, Ad, B
 }
