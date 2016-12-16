@@ -3,13 +3,9 @@ package com.github.forfun;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.github.forfun.Note.C;
-import static com.github.forfun.Note.E;
-import static com.github.forfun.Note.G;
-
 public enum Chord {
 
-    A(C, E, G), Am(Note.A, C, E), Dm(Note.E, Note.F, Note.A), F(Note.F, Note.A, Note.C);
+    C(Note.C, Note.E, Note.G), Am(Note.A, Note.C, Note.E), Dm(Note.D, Note.F, Note.A), F(Note.F, Note.A, Note.C), G(Note.G, Note.B, Note.D);
 
     private final List<Note> notes;
 

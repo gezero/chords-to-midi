@@ -34,10 +34,12 @@ public class Application {
 
             final Application application = new Application();
             application.initialize();
-            Random r = new Random();
 
-            for (int i = 0; i < 1000; i++) {
-                application.playNote(r.nextInt(20), 20);
+            for (int i = 0; i < 10; i++) {
+                application.playChord(Chord.C);
+                application.playChord(Chord.Am);
+                application.playChord(Chord.Dm);
+                application.playChord(Chord.G);
             }
 
             application.closeMidi();
@@ -60,7 +62,7 @@ public class Application {
         track.add(me);
 
 //****  write the MIDI sequence to a MIDI file  ****
-        File f = new File("midifile.mid");
+        File f = new File("target/midifile.mid");
         MidiSystem.write(sequence, 1, f);
     }
 
