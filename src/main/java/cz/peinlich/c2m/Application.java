@@ -1,5 +1,8 @@
 package cz.peinlich.c2m;
 
+import cz.peinlich.c2m.midi.Chord;
+import cz.peinlich.c2m.midi.Note;
+
 import javax.sound.midi.*;
 import java.io.File;
 import java.io.IOException;
