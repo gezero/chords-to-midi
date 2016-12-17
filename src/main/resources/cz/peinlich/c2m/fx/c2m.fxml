@@ -23,7 +23,7 @@
     <Label text="File:"
            GridPane.columnIndex="0" GridPane.rowIndex="2"/>
 
-    <TextField fx:id="file" text="target/output.midi"
+    <TextField fx:id="file" text="target/output.mid"
                GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
     <HBox spacing="10" alignment="bottom_right"

@@ -1,65 +1,29 @@
-package cz.peinlich.c2m;
-
-import cz.peinlich.c2m.midi.Chord;
-import cz.peinlich.c2m.midi.Note;
+package cz.peinlich.c2m.midi;
 
 import javax.sound.midi.*;
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 
-public class Application {
+/**
+ * @author Jiri
+ */
+public class MidiGenerator {
 
 
-    public static final int PLAY_NOTE = 0x90;
-    public static final int RELEASE_NOTE = 0x80;
-    private final Sequence sequence;
+    private static final int PLAY_NOTE = 0x90;
+    private static final int RELEASE_NOTE = 0x80;
+
     private final Track track;
+    private final Sequence sequence;
     private long curTick;
 
-    public Application() throws InvalidMidiDataException {
+
+    public MidiGenerator() throws InvalidMidiDataException {
         sequence = new Sequence(Sequence.PPQ, 24);
         track = sequence.createTrack();
         curTick = 1;
     }
 
-    public static void main(String[] args) {
-        System.out.println("midifile begin ");
-
-        try {
-
-            final Application application = new Application();
-            application.initialize();
-
-            for (int i = 0; i < 10; i++) {
-                application.playChord(Chord.C);
-                application.playChord(Chord.Am);
-                application.playChord(Chord.Dm);
-                application.playChord(Chord.G);
-            }
-
-            application.closeMidi();
-        } //try
-        catch (Exception e) {
-            System.out.println("Exception caught " + e.toString());
-        } //catch
-        System.out.println("midifile end ");
-    }
-
-    public void closeMidi() throws InvalidMidiDataException, IOException {
-        MetaMessage mt;
-        MidiEvent me;
-
-//****  set end of track (meta event) 19 ticks later  ****
-        mt = new MetaMessage();
-        byte[] bet = {}; // empty array
-        mt.setMessage(0x2F, bet, 0);
-        me = new MidiEvent(mt, (long) 140);
-        track.add(me);
-
-//****  write the MIDI sequence to a MIDI file  ****
-        File f = new File("target/midifile.mid");
-        MidiSystem.write(sequence, 1, f);
-    }
 
     public void initialize() throws InvalidMidiDataException {
         //****  General MIDI sysex -- turn on General MIDI sound set  ****
@@ -78,7 +42,7 @@ public class Application {
 
 //****  set track name (meta event)  ****
         mt = new MetaMessage();
-        String TrackName = new String("midifile track");
+        String TrackName = "midifile track";
         mt.setMessage(0x03, TrackName.getBytes(), TrackName.length());
         me = new MidiEvent(mt, (long) 0);
         track.add(me);
@@ -102,7 +66,14 @@ public class Application {
         track.add(me);
     }
 
-    public void playChord(Chord c) throws InvalidMidiDataException {
+
+    public void playChords(Iterable<Chord> chords) throws InvalidMidiDataException {
+        for (Chord chord : chords) {
+            playChord(chord);
+        }
+    }
+
+    private void playChord(Chord c) throws InvalidMidiDataException {
         for (Note note : c.getNotes()) {
             pressNote(note.ordinal());
         }
@@ -114,12 +85,6 @@ public class Application {
         }
     }
 
-    public void playNote(int i, long ticks) throws InvalidMidiDataException {
-
-        pressNote(i);
-        curTick += ticks;
-        releaseNote(i);
-    }
 
     private void releaseNote(int i) throws InvalidMidiDataException {
         ShortMessage mm;
@@ -137,5 +102,22 @@ public class Application {
         mm.setMessage(PLAY_NOTE, 0x3C + i, 0x60);
         MidiEvent me = new MidiEvent(mm, curTick);
         track.add(me);
+    }
+
+
+    public void closeMidi() throws InvalidMidiDataException, IOException {
+        MetaMessage mt;
+        MidiEvent me;
+
+//****  set end of track (meta event) 19 ticks later  ****
+        mt = new MetaMessage();
+        byte[] bet = {}; // empty array
+        mt.setMessage(0x2F, bet, 0);
+        me = new MidiEvent(mt, (long) 140);
+        track.add(me);
+    }
+
+    public void writeToFile(Path path) throws IOException {
+        MidiSystem.write(sequence, 1, path.toFile());
     }
 }
