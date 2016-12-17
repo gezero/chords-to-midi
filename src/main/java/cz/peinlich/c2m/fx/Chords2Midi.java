@@ -1,10 +1,13 @@
 package cz.peinlich.c2m.fx;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+
+import java.io.IOException;
+import java.net.URL;
 
 public class Chords2Midi extends Application {
 
@@ -13,15 +16,15 @@ public class Chords2Midi extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) {
-        primaryStage.setTitle("Hello World!");
-        Button btn = new Button();
-        btn.setText("Say 'Hello World'");
-        btn.setOnAction(event -> System.out.println("Hello World!"));
+    public void start(Stage primaryStage) throws IOException {
 
-        StackPane root = new StackPane();
-        root.getChildren().add(btn);
-        primaryStage.setScene(new Scene(root, 300, 250));
+        URL resource = getClass().getResource("fxml_example.fxml");
+        Parent root = FXMLLoader.load(resource);
+
+        Scene scene = new Scene(root, 300, 275);
+
+        primaryStage.setTitle("FXML Welcome");
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 }
