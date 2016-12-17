@@ -8,6 +8,7 @@ public class Application {
 
 
     public static final int PLAY_NOTE = 0x90;
+    public static final int RELEASE_NOTE = 0x80;
     private final Sequence sequence;
     private final Track track;
     private long curTick;
@@ -123,7 +124,7 @@ public class Application {
 
 //****  note off - middle C - 120 ticks later  ****
         mm = new ShortMessage();
-        mm.setMessage(0x80, 0x3C + i, 0x40);
+        mm.setMessage(RELEASE_NOTE, 0x3C + i, 0x40);
         me = new MidiEvent(mm, curTick);
         track.add(me);
     }
