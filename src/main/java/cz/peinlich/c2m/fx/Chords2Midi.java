@@ -18,7 +18,7 @@ public class Chords2Midi extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
 
-        URL resource = getClass().getResource("fxml_example.fxml");
+        URL resource = getClass().getResource("c2m.fxml");
         Parent root = FXMLLoader.load(resource);
 
         Scene scene = new Scene(root, 300, 275);
