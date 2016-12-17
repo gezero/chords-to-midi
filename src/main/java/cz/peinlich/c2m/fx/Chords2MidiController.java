@@ -15,6 +15,8 @@ public class Chords2MidiController {
     @FXML
     public TextField chords;
     @FXML
+    public TextField file;
+    @FXML
     private Text actionTarget;
 
     @FXML
