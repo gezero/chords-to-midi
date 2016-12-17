@@ -1,6 +1,6 @@
 package cz.peinlich.c2m.fx;
 
-import cz.peinlich.c2m.midi.Chord;
+import cz.peinlich.c2m.midi.BaseChord;
 import cz.peinlich.c2m.midi.MidiGenerator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -27,11 +27,11 @@ public class Chords2MidiController {
             MidiGenerator generator = new MidiGenerator();
             generator.initialize();
 
-            generator.playChords(Chord.parseChords(chords.getText()));
+            generator.playChords(BaseChord.parseChords(chords.getText()));
 
             generator.closeMidi();
             generator.writeToFile(Paths.get(file.getText()));
-            actionTarget.setText("Found " + Chord.parseChords(chords.getText()).size() + " chords");
+            actionTarget.setText("Found " + BaseChord.parseChords(chords.getText()).size() + " chords");
         } catch (Exception e) {
             e.printStackTrace();
             actionTarget.setText("There was a problem parsing chords...");
