@@ -1,4 +1,4 @@
-package com.github.forfun;
+package cz.peinlich.c2m;
 
 import java.util.Arrays;
 import java.util.List;

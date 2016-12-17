@@ -1,17 +1,8 @@
-package com.github.forfun;
+package cz.peinlich.c2m;
 
+import javax.sound.midi.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.Random;
-
-import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.MetaMessage;
-import javax.sound.midi.MidiEvent;
-import javax.sound.midi.MidiSystem;
-import javax.sound.midi.Sequence;
-import javax.sound.midi.ShortMessage;
-import javax.sound.midi.SysexMessage;
-import javax.sound.midi.Track;
 
 public class Application {
 
