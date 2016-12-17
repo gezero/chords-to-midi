@@ -27,13 +27,27 @@ public enum BaseChord implements Chord {
         for (String part : split) {
             result.add(BaseChord.valueOf(part));
         }
-
         return result;
-
     }
 
     @Override
     public Iterator<Note> iterator() {
         return notes.iterator();
+    }
+
+
+    @Override
+    public Chord baseChord() {
+        return this;
+    }
+
+    @Override
+    public Chord firstInversion() {
+        return new InvertedChord(this, 1);
+    }
+
+    @Override
+    public Chord secondInversion() {
+        return new InvertedChord(this, 2);
     }
 }
