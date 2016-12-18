@@ -26,8 +26,15 @@
     <TextField fx:id="file" text="target/output.mid"
                GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
+    <Label text="Voice lead:"
+           GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+
+    <CheckBox fx:id="voiceLead"
+              GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
     <HBox spacing="10" alignment="bottom_right"
           GridPane.columnIndex="1" GridPane.rowIndex="4">
+
         <Button text="Generate"
                 onAction="#handleSubmitButtonAction"/>
     </HBox>

@@ -5,6 +5,7 @@ import cz.peinlich.c2m.midi.ChordName;
 import cz.peinlich.c2m.midi.MidiGenerator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
@@ -21,6 +22,8 @@ public class Chords2MidiController {
     @FXML
     public TextField file;
     @FXML
+    public CheckBox voiceLead;
+    @FXML
     private Text actionTarget;
 
     @FXML
@@ -30,12 +33,18 @@ public class Chords2MidiController {
             MidiGenerator generator = new MidiGenerator();
             generator.initialize();
             List<Chord> chords = ChordName.parseChords(this.chords.getText()).stream().map(Chord::new).collect(Collectors.toList());
-            generator.playChords(chords);
+
+            Boolean value = voiceLead.selectedProperty().getValue();
+            if (value) {
+                generator.playVoiceLead(chords);
+            } else {
+                generator.playChords(chords);
+            }
 
             generator.closeMidi();
             generator.writeToFile(Paths.get(file.getText()));
             actionTarget.setText("Found " + chords.size() + " chords");
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             e.printStackTrace();
             actionTarget.setText("There was a problem parsing chords...");
         }

@@ -1,15 +1,21 @@
 package cz.peinlich.c2m.midi;
 
+import com.google.common.base.MoreObjects;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.*;
 
 /**
  * @author Jiri
  */
 public class Chord implements Iterable<Note> {
+    private static final Logger logger = LoggerFactory.getLogger(Chord.class);
 
     private final ChordName chordName;
     private final int inversion;
     private final int octave;
+    private final List<Note> notes;
 
     private final List<NoteName> noteNames;
 
@@ -27,15 +33,76 @@ public class Chord implements Iterable<Note> {
             noteNames.add(noteName);
         }
         Collections.rotate(noteNames, inversion);
+        notes = new ArrayList<>(3);
+        for (int i = 0; i < noteNames.size(); i++) {
+            notes.add(new Note(noteNames.get(i), (inversion + i) < 3 ? octave : octave + 1));
+        }
     }
 
+    static Chord from(ChordName chordName) {
+        return new Chord(chordName);
+    }
 
     @Override
     public Iterator<Note> iterator() {
-        List<Note> result = new ArrayList<>(3);
-        for (int i = 0; i < noteNames.size(); i++) {
-            result.add(new Note(noteNames.get(i), (inversion + i) < 3 ? octave : octave + 1));
-        }
-        return result.iterator();
+        return notes.iterator();
     }
+
+    Chord inversionFrom(Chord previous) {
+
+        // if first note is in the second list than invert until you get that note to the first place and return i guess
+
+        for (int i = 0; i < previous.noteNames.size(); i++) {
+            NoteName note = previous.noteNames.get(i);
+            if (noteNames.contains(note)) {
+                if (firstInversion().noteNames.get(i).equals(note)) {
+                    return firstInversion().withOctave(previous.octave);
+                }
+                if (secondInversion().noteNames.get(i).equals(note)) {
+                    return secondInversion().withOctave(previous.octave);
+                }
+                return this;
+
+            }
+        }
+        return withOctave(previous.octave);
+    }
+
+    private Chord firstInversion() {
+        return new Chord(chordName, inversion + 1, octave);
+    }
+
+    Chord secondInversion() {
+        return new Chord(chordName, inversion + 2, octave);
+    }
+
+    Chord withOctave(int octave) {
+        return new Chord(chordName, inversion, octave);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("notes", notes)
+                .toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Chord notes1 = (Chord) o;
+        return inversion == notes1.inversion &&
+                octave == notes1.octave &&
+                chordName == notes1.chordName &&
+                Objects.equals(notes, notes1.notes) &&
+                Objects.equals(noteNames, notes1.noteNames);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(chordName, inversion, octave, notes, noteNames);
+    }
+
+
 }
