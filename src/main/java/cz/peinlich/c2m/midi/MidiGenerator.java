@@ -67,13 +67,13 @@ public class MidiGenerator {
     }
 
 
-    public void playChords(Iterable<BaseChord> chords) throws InvalidMidiDataException {
-        for (BaseChord chord : chords) {
+    public void playChords(Iterable<Chord> chords) throws InvalidMidiDataException {
+        for (Chord chord : chords) {
             playChord(chord);
         }
     }
 
-    private void playChord(BaseChord chord) throws InvalidMidiDataException {
+    private void playChord(Chord chord) throws InvalidMidiDataException {
         for (Note note : chord) {
             pressNote(note);
         }
