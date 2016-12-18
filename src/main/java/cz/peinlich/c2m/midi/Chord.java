@@ -1,37 +1,108 @@
 package cz.peinlich.c2m.midi;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import com.google.common.base.MoreObjects;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public enum Chord {
+import java.util.*;
 
-    C(Note.C, Note.E, Note.G),
-    Am(Note.A, Note.C, Note.E),
-    Dm(Note.D, Note.F, Note.A),
-    F(Note.F, Note.A, Note.C),
-    G(Note.G, Note.B, Note.D),
-    Em(Note.E, Note.G, Note.B);
+/**
+ * @author Jiri
+ */
+public class Chord implements Iterable<Note> {
+    private static final Logger logger = LoggerFactory.getLogger(Chord.class);
 
+    private final ChordName chordName;
+    private final int inversion;
+    private final int octave;
     private final List<Note> notes;
 
-    Chord(Note... notes) {
-        this.notes = Arrays.asList(notes);
+    private final List<NoteName> noteNames;
+
+
+    public Chord(ChordName chordName) {
+        this(chordName, 0, 4);
     }
 
-    public static List<Chord> parseChords(String source) {
-        String trim = source.trim();
-        String[] split = trim.split(" ");
-        List<Chord> result = new ArrayList<>(split.length);
-        for (String part : split) {
-            result.add(Chord.valueOf(part));
+    private Chord(ChordName chordName, int inversion, int octave) {
+        this.chordName = chordName;
+        this.inversion = inversion % 3;
+        this.octave = octave;
+        noteNames = new LinkedList<>();
+        for (NoteName noteName : chordName) {
+            noteNames.add(noteName);
         }
-
-        return result;
-
+        Collections.rotate(noteNames, inversion);
+        notes = new ArrayList<>(3);
+        for (int i = 0; i < noteNames.size(); i++) {
+            notes.add(new Note(noteNames.get(i), (inversion + i) < 3 ? octave : octave + 1));
+        }
     }
 
-    public List<Note> getNotes() {
-        return notes;
+    static Chord from(ChordName chordName) {
+        return new Chord(chordName);
     }
+
+    @Override
+    public Iterator<Note> iterator() {
+        return notes.iterator();
+    }
+
+    Chord inversionFrom(Chord previous) {
+
+        // if first note is in the second list than invert until you get that note to the first place and return i guess
+
+        for (int i = 0; i < previous.noteNames.size(); i++) {
+            NoteName note = previous.noteNames.get(i);
+            if (noteNames.contains(note)) {
+                if (firstInversion().noteNames.get(i).equals(note)) {
+                    return firstInversion().withOctave(previous.octave);
+                }
+                if (secondInversion().noteNames.get(i).equals(note)) {
+                    return secondInversion().withOctave(previous.octave);
+                }
+                return this;
+
+            }
+        }
+        return withOctave(previous.octave);
+    }
+
+    private Chord firstInversion() {
+        return new Chord(chordName, inversion + 1, octave);
+    }
+
+    Chord secondInversion() {
+        return new Chord(chordName, inversion + 2, octave);
+    }
+
+    Chord withOctave(int octave) {
+        return new Chord(chordName, inversion, octave);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("notes", notes)
+                .toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Chord notes1 = (Chord) o;
+        return inversion == notes1.inversion &&
+                octave == notes1.octave &&
+                chordName == notes1.chordName &&
+                Objects.equals(notes, notes1.notes) &&
+                Objects.equals(noteNames, notes1.noteNames);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(chordName, inversion, octave, notes, noteNames);
+    }
+
+
 }

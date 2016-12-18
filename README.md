@@ -16,3 +16,7 @@ So when the main starts there is an dialog where I paste the chords progression 
 Synthesia has a file format that contains metadata about a midi file. Here is [link to the guide](http://www.synthesiagame.com/support/guide/contentCreators).
 
 [First part](https://www.youtube.com/watch?v=sjN3-ZeuJaY) and [Second part](https://www.youtube.com/watch?v=X1coZlJRrx8) of the tutorial video that inspired me to create this project.
+
+# Disclaimer
+Because I am not a musician (yet), some of the abstractions in the program can seem to be clumsy. It is not you, it is me. 
+I have some small amount of trouble to properly abstract the problem in a way that would sound sane.
