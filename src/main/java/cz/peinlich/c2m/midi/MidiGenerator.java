@@ -75,31 +75,30 @@ public class MidiGenerator {
 
     private void playChord(BaseChord chord) throws InvalidMidiDataException {
         for (Note note : chord) {
-            pressNote(note.ordinal());
+            pressNote(note);
         }
 
         curTick += 100;
 
         for (Note note : chord) {
-            releaseNote(note.ordinal());
+            releaseNote(note);
         }
     }
 
 
-    private void releaseNote(int i) throws InvalidMidiDataException {
+    private void releaseNote(Note note) throws InvalidMidiDataException {
         ShortMessage mm;
         MidiEvent me;
 
-//****  note off - middle C - 120 ticks later  ****
         mm = new ShortMessage();
-        mm.setMessage(RELEASE_NOTE, 0x3C + i, 0x40);
+        mm.setMessage(RELEASE_NOTE, note.pitch(), 0x40);
         me = new MidiEvent(mm, curTick);
         track.add(me);
     }
 
-    private void pressNote(int i) throws InvalidMidiDataException {
+    private void pressNote(Note note) throws InvalidMidiDataException {
         ShortMessage mm = new ShortMessage();
-        mm.setMessage(PLAY_NOTE, 0x3C + i, 0x60);
+        mm.setMessage(PLAY_NOTE, note.pitch(), 0x60);
         MidiEvent me = new MidiEvent(mm, curTick);
         track.add(me);
     }
