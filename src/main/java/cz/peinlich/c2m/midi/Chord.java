@@ -42,6 +42,13 @@ public class Chord implements Iterable<Note> {
     static Chord from(ChordName chordName) {
         return new Chord(chordName);
     }
+    static List<Chord> from(Collection<ChordName> chordNames){
+        List<Chord> result = new ArrayList<>( chordNames.size() );
+        for( ChordName chordName : chordNames ) {
+            result.add( from( chordName ) );
+        }
+        return result;
+    }
 
     @Override
     public Iterator<Note> iterator() {
@@ -68,7 +75,7 @@ public class Chord implements Iterable<Note> {
         return withOctave(previous.octave);
     }
 
-    private Chord firstInversion() {
+    Chord firstInversion() {
         return new Chord(chordName, inversion + 1, octave);
     }
 
