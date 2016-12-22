@@ -35,8 +35,11 @@ public class Chord implements Iterable<Note>
         Collections.rotate( noteNames, inversion );
         notes = new ArrayList<>( 3 );
 
-        for( int i = 0; i < noteNames.size(); i++ ) {
-            notes.add( new Note( noteNames.get( i ), (inversion + i) < 3 ? octave : octave + 1 ) );
+        NoteName firstNote = noteNames.get( 0 );
+        notes.add( new Note( firstNote, octave ) );
+
+        for( int i = 1; i < noteNames.size(); i++ ) {
+            notes.add( new Note( noteNames.get( i ), noteNames.get( i ).ordinal() < firstNote.ordinal() ? octave + 1 : octave ) );
         }
     }
 
@@ -63,13 +66,13 @@ public class Chord implements Iterable<Note>
             NoteName note = previous.noteNames.get( i );
             if( noteNames.contains( note ) ) {
                 if( noteNames.get( i ).equals( note ) ) {
-                    return movedTo( notes.get( i ) );
+                    return movedTo( previous.notes.get( i ) );
                 }
                 if( firstInversion().noteNames.get( i ).equals( note ) ) {
-                    return firstInversion().movedTo( notes.get( i ) );
+                    return firstInversion().movedTo( previous.notes.get( i ) );
                 }
                 if( secondInversion().noteNames.get( i ).equals( note ) ) {
-                    return secondInversion().movedTo( notes.get( i ) );
+                    return secondInversion().movedTo( previous.notes.get( i ) );
                 }
                 return this;
 

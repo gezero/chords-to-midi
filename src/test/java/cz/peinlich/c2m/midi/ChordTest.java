@@ -26,7 +26,7 @@ public class ChordTest {
     }
 
     @Test
-    public void voiceLeadInversionLookup() {
+    public void inversionLookup() {
         Chord first = Chord.from(ChordName.C);
         Chord second = Chord.from(ChordName.G);
 
@@ -45,5 +45,13 @@ public class ChordTest {
 
         assertEquals( Arrays.asList( new Note( NoteName.E, 4 ), new Note( NoteName.A, 4 ), new Note( NoteName.C, 5 ) ), notes );
 
+        inverted = Chord.from( ChordName.C ).secondInversion().withOctave( 4 );
+
+        notes = new ArrayList<>( 3 );
+        Iterables.addAll( notes, inverted );
+
+        assertEquals( Arrays.asList( new Note( NoteName.E, 4 ), new Note( NoteName.G, 4 ), new Note( NoteName.C, 5 ) ), notes );
+
     }
+
 }
