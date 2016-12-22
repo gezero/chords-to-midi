@@ -1,7 +1,9 @@
 package cz.peinlich.c2m.midi;
 
+import com.google.common.collect.Iterables;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -57,6 +59,17 @@ class VoiceLeadTransformerTest
                         Chord.from( ChordName.F ).firstInversion().withOctave( 4 )
                 );
         assertEquals( expectedInversion, transformed );
+
+    }
+
+    @Test
+    void inversionFlipsNotesOnC() {
+        Chord inverted = Chord.from( ChordName.Am ).firstInversion().withOctave( 4 );
+
+        List<Note> notes = new ArrayList<>( 3 );
+        Iterables.addAll( notes, inverted );
+
+        assertEquals( Arrays.asList( new Note( NoteName.E, 4 ), new Note( NoteName.A, 4 ), new Note( NoteName.C, 5 ) ), notes );
 
     }
 }

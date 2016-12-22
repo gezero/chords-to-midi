@@ -39,4 +39,13 @@ public class Note {
     public String toString() {
         return "[" + noteName.toString() + String.valueOf(octave) + "]";
     }
+
+    public NoteName getName() {
+        return noteName;
+    }
+
+    public int getOctave() {
+        return octave;
+    }
+
 }

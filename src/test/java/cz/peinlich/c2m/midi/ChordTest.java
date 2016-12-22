@@ -26,7 +26,8 @@ public class ChordTest {
         Chord second = Chord.from(ChordName.G);
 
         Chord inversion = second.inversionFrom(first);
+
         logger.info("First: {}, Second: {}, Inversion: {}", first, second, inversion);
-        assertEquals(second.secondInversion().withOctave(4), inversion);
+        assertEquals(second.secondInversion().withOctave(3), inversion);
     }
 }
