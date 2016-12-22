@@ -128,4 +128,7 @@ public class Chord implements Iterable<Note>
         return Objects.hash( chordName, inversion, octave, notes, noteNames );
     }
 
+    ChordName name() {
+        return chordName;
+    }
 }
