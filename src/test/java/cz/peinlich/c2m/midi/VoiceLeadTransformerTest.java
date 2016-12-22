@@ -10,12 +10,9 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-/**
- * Created by jiri.peinlich on 19/12/2016.
- */
 class VoiceLeadTransformerTest
 {
-    VoiceLeadTransformer transformer = new VoiceLeadTransformer();
+    private VoiceLeadTransformer transformer = new VoiceLeadTransformer();
 
     @Test
     void singleChord() {
@@ -59,17 +56,6 @@ class VoiceLeadTransformerTest
                         Chord.from( ChordName.F ).firstInversion().withOctave( 4 )
                 );
         assertEquals( expectedInversion, transformed );
-
-    }
-
-    @Test
-    void inversionFlipsNotesOnC() {
-        Chord inverted = Chord.from( ChordName.Am ).firstInversion().withOctave( 4 );
-
-        List<Note> notes = new ArrayList<>( 3 );
-        Iterables.addAll( notes, inverted );
-
-        assertEquals( Arrays.asList( new Note( NoteName.E, 4 ), new Note( NoteName.A, 4 ), new Note( NoteName.C, 5 ) ), notes );
 
     }
 }
