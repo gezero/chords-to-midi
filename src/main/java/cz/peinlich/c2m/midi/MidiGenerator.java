@@ -85,17 +85,6 @@ public class MidiGenerator {
         }
     }
 
-
-    public void playVoiceLead(List<Chord> chords) {
-        Chord previous = chords.get(0);
-        for (Chord chord : chords) {
-            logger.info("Previous: {}, current: {}", previous, chord);
-            previous = chord.inversionFrom(previous);
-            logger.info(("New {}"), previous);
-            playChord(previous);
-        }
-    }
-
     private void playChord(Chord chord) {
         for (Note note : chord) {
             pressNote(note);

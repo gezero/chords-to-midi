@@ -3,6 +3,7 @@ package cz.peinlich.c2m.fx;
 import cz.peinlich.c2m.midi.Chord;
 import cz.peinlich.c2m.midi.ChordName;
 import cz.peinlich.c2m.midi.MidiGenerator;
+import cz.peinlich.c2m.midi.VoiceLeadTransformer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
@@ -36,7 +37,7 @@ public class Chords2MidiController {
 
             Boolean value = voiceLead.selectedProperty().getValue();
             if (value) {
-                generator.playVoiceLead(chords);
+                generator.playChords( new VoiceLeadTransformer().transform( chords ) );
             } else {
                 generator.playChords(chords);
             }

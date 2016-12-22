@@ -1,8 +1,13 @@
 package cz.peinlich.c2m.midi;
 
+import com.google.common.collect.Iterables;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
@@ -21,12 +26,32 @@ public class ChordTest {
     }
 
     @Test
-    public void voiceLeadInversionLookup() {
+    public void inversionLookup() {
         Chord first = Chord.from(ChordName.C);
         Chord second = Chord.from(ChordName.G);
 
         Chord inversion = second.inversionFrom(first);
+
         logger.info("First: {}, Second: {}, Inversion: {}", first, second, inversion);
-        assertEquals(second.secondInversion().withOctave(4), inversion);
+        assertEquals(second.secondInversion().withOctave(3), inversion);
     }
+
+    @Test
+    void inversionFlipsNotesOnC() {
+        Chord inverted = Chord.from( ChordName.Am ).firstInversion().withOctave( 4 );
+
+        List<Note> notes = new ArrayList<>( 3 );
+        Iterables.addAll( notes, inverted );
+
+        assertEquals( Arrays.asList( new Note( NoteName.E, 4 ), new Note( NoteName.A, 4 ), new Note( NoteName.C, 5 ) ), notes );
+
+        inverted = Chord.from( ChordName.C ).secondInversion().withOctave( 4 );
+
+        notes = new ArrayList<>( 3 );
+        Iterables.addAll( notes, inverted );
+
+        assertEquals( Arrays.asList( new Note( NoteName.E, 4 ), new Note( NoteName.G, 4 ), new Note( NoteName.C, 5 ) ), notes );
+
+    }
+
 }
