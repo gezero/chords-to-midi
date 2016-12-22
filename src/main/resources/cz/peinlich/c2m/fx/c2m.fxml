@@ -17,7 +17,7 @@
     <Label text="Chords:"
            GridPane.columnIndex="0" GridPane.rowIndex="1"/>
 
-    <TextField fx:id="chords" text="Am G F Em C"
+    <TextField fx:id="chords" text="C G Am F C G Am F C G Am F"
                GridPane.columnIndex="1" GridPane.rowIndex="1"/>
 
     <Label text="File:"
