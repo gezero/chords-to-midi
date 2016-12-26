@@ -31,7 +31,7 @@ public class MidiGenerator
         }
         rightHand = sequence.createTrack();
         leftHand = sequence.createTrack();
-        curTick = 1;
+        curTick = 0;
     }
 
     public void initialize() {
