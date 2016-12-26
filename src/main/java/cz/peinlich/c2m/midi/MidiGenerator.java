@@ -46,7 +46,7 @@ public class MidiGenerator
 
             //****  set tempo (meta event)  ****
             MetaMessage mt = new MetaMessage();
-            byte[] bt = { 0x02, (byte) 0x00, 0x00 };
+            byte[] bt = {0x07, (byte) 0xA1, 0x20};
             mt.setMessage( 0x51, bt, 3 );
             me = new MidiEvent( mt, (long) 0 );
             rightHand.add( me );
