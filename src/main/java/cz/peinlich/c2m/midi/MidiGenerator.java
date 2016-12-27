@@ -14,10 +14,10 @@ import java.nio.file.Path;
 public class MidiGenerator
 {
 
+    private static final int QUARTER_TICK = 24;
     private static final Logger logger = LoggerFactory.getLogger( MidiGenerator.class );
     private static final int PLAY_NOTE = 0x90;
     private static final int RELEASE_NOTE = 0x80;
-
     private final Track rightHand;
     private final Track leftHand;
     private final Sequence sequence;
@@ -31,7 +31,7 @@ public class MidiGenerator
         }
         rightHand = sequence.createTrack();
         leftHand = sequence.createTrack();
-        curTick = 1;
+        curTick = 0;
     }
 
     public void initialize() {
@@ -46,7 +46,7 @@ public class MidiGenerator
 
             //****  set tempo (meta event)  ****
             MetaMessage mt = new MetaMessage();
-            byte[] bt = { 0x02, (byte) 0x00, 0x00 };
+            byte[] bt = {0x07, (byte) 0xA1, 0x20};
             mt.setMessage( 0x51, bt, 3 );
             me = new MidiEvent( mt, (long) 0 );
             rightHand.add( me );
@@ -104,7 +104,7 @@ public class MidiGenerator
                 pressNote( note, rightHand );
             }
 
-            curTick += 100;
+            curTick += QUARTER_TICK;
 
             for( Note note : chord ) {
                 releaseNote( note, rightHand );
